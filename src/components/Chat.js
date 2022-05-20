@@ -1,26 +1,39 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useRef} from 'react'
 import SignOut from './SignOut'
-import { db } from '../firebase'
+import { auth, db } from '../firebase'
+import SendMessage from './SendMessage'
 
 function Chat() {
   const [messages,setMessages]=useState([])
+  const scroll = useRef()
   useEffect(()=>{
-      db.collection('messages').orderBy('createdBy').limit(50).onSnapshot(snapshot=>{
-            setMessages(snapshot.docs.map(doc=>doc.data))
-      })
+   
+    db.collection('messages').orderBy('createdAt').limit(50).onSnapshot(snapshot => {
+      setMessages(snapshot.docs.map(doc => doc.data()))
+  })
   },[])
-  console.log(messages.data);
+ 
   return (
 
-    <div>
+    <>
           <SignOut/>
-          {messages.map(({id,text,photoURL})=>{
-               <div key={id}>
-                  <img src={photoURL}  />
-                  <p>text</p>
+          <div className='msgs'>
+          {messages.map(({id,text,photoURL,uid}) =>{
+             return(
+               <div>
+               <div key={id} className={`msg ${uid == auth.currentUser.uid ?'sent': 'received'}`}>
+                  <img  crossOrigin="anonymous" src={photoURL} alt=""  />
+                  <p>{text}</p>
                </div>
+               </div>)
           })}
-    </div>
+          </div>
+         
+
+         
+          <SendMessage scroll={scroll} />
+           <div ref={scroll}></div>
+    </>
   )
 }
 
