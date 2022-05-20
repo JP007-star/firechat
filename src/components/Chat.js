@@ -3,6 +3,7 @@ import SignOut from './SignOut'
 import { auth, db } from '../firebase'
 import SendMessage from './SendMessage'
 
+
 function Chat() {
   const [messages,setMessages]=useState([])
   const scroll = useRef()
@@ -18,12 +19,15 @@ function Chat() {
     <>
           <SignOut/>
           <div className='msgs'>
-          {messages.map(({id,text,photoURL,uid}) =>{
+          {messages.map(({id,text,photoURL,uid,createdAt}) =>{
+           
              return(
                <div>
                <div key={id} className={`msg ${uid == auth.currentUser.uid ?'sent': 'received'}`}>
                   <img  crossOrigin="anonymous" src={photoURL} alt=""  />
                   <p>{text}</p>
+                  <span className='time'>{ createdAt.toDate().toString().slice(0,34)}</span>
+                 
                </div>
                </div>)
           })}
