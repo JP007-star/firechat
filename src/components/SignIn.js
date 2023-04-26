@@ -13,7 +13,9 @@ function SignIn() {
     }
   return (
     <div>
+       <center>
         <Button onClick={signInWithGoogle()}>Signin with Google</Button>
+      </center>
     </div>
   )
 }
