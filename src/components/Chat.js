@@ -23,7 +23,7 @@ function Chat() {
            
              return(
                <div>
-               <div key={id} className={`msg ${uid == auth.currentUser.uid ?'sent': 'received'}`}>
+               <div key={id} className={`msg ${uid === auth.currentUser.uid ?'sent': 'received'}`}>
                   <img  crossOrigin="anonymous" src={photoURL} alt=""  />
                   <p>{text}</p>
                   <span className='time'>{ createdAt.toDate().toString().slice(0,34)}</span>
